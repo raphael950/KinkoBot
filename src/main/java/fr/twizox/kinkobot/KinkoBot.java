@@ -1,6 +1,7 @@
 package fr.twizox.kinkobot;
 
 import com.google.gson.JsonObject;
+import fr.twizox.kinkobot.commands.OpenCommand;
 import fr.twizox.kinkobot.databases.H2Database;
 import fr.twizox.kinkobot.listeners.MessageReceivedListener;
 import fr.twizox.kinkobot.listeners.SlashCommandListener;
@@ -15,6 +16,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class KinkoBot {
@@ -48,15 +50,20 @@ public class KinkoBot {
             return;
         }
 
+        OpenCommand openCommand = new OpenCommand();
+
         api = JDABuilder.createDefault(config.get("token").getAsString(),
                         GatewayIntent.MESSAGE_CONTENT,
                         GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.GUILD_VOICE_STATES,
                         GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
                 .setActivity(Activity.watching("kinkomc.fr"))
-                .addEventListeners(new MessageReceivedListener(data), new SlashCommandListener())
+                .addEventListeners(new MessageReceivedListener(data), new SlashCommandListener(List.of(openCommand)))
                 .build();
-        api.updateCommands().addCommands(Commands.slash("ouverture", "Informations concernant la date d'ouverturee")
+
+
+
+        api.updateCommands().addCommands(openCommand
                 .addOption(OptionType.MENTIONABLE, "utilisateur", "Afficher le message d'ouverture à un membre du serveur", false, false)).submit().thenRun(() -> {
             Logger.info(getClass(), "Slash commands registered!");
         });
