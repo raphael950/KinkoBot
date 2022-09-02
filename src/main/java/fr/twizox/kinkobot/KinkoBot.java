@@ -5,6 +5,7 @@ import fr.twizox.kinkobot.databases.H2Database;
 import fr.twizox.kinkobot.listeners.MessageReceivedListener;
 import fr.twizox.kinkobot.listeners.SlashCommandListener;
 import fr.twizox.kinkobot.utils.FileUtils;
+import fr.twizox.kinkobot.utils.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -26,7 +27,7 @@ public class KinkoBot {
         try {
             instance.start(args);
         } catch (LoginException e) {
-            System.out.println("Invalid token");
+            Logger.error(KinkoBot.class, "Invalid token");
         }
     }
 
@@ -43,7 +44,7 @@ public class KinkoBot {
             data = FileUtils.parseJSONFile("data.json");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Could not load config.json or data.json");
+            Logger.error(getClass(),"Could not load config.json or data.json");
             return;
         }
 
@@ -57,7 +58,7 @@ public class KinkoBot {
                 .build();
         api.updateCommands().addCommands(Commands.slash("ouverture", "Informations concernant la date d'ouverturee")
                 .addOption(OptionType.MENTIONABLE, "utilisateur", "Afficher le message d'ouverture à un membre du serveur", false, false)).submit().thenRun(() -> {
-            System.out.println("Commands registered!");
+            Logger.info(getClass(), "Slash commands registered!");
         });
 
         Scanner scanner = new Scanner(System.in);
@@ -66,16 +67,19 @@ public class KinkoBot {
             if (line.equalsIgnoreCase("exit")) {
                 stop(data);
             } else {
-                System.out.println("Unknown command: " + line);
-                System.out.println("Available commands: exit");
+                Logger.warn(getClass(), "Unknown command");
+                Logger.warn(getClass(), "Available commands: exit");
             }
         }
     }
 
     public void stop(JsonObject data) {
-        System.out.println("Exiting...");
+        Logger.info(getClass(), "Stopping KinkoBot...");
+
         FileUtils.saveJSONFile("data.json", data);
+        Logger.info(getClass(), "Off");
         api.shutdown();
+
         System.exit(0);
     }
 

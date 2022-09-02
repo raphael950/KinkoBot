@@ -1,8 +1,7 @@
 package fr.twizox.kinkobot.databases;
 
 import com.j256.ormlite.support.ConnectionSource;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 public abstract class Database {
 

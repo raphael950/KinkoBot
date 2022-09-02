@@ -4,10 +4,10 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class H2Database extends Database {
 
@@ -22,7 +22,7 @@ public class H2Database extends Database {
             logger.info("Successfully connected to database: " + name);
             return true;
         } catch (SQLException e) {
-            logger.severe("Could not connect the database" + name + "!" + "\n" + e);
+            logger.error("Could not connect the database" + name + "!" + "\n" + e);
             return false;
         }
     }
@@ -30,9 +30,9 @@ public class H2Database extends Database {
     public void close() {
         try {
             connectionSource.close();
-            logger.fine("Successfully disconnected from the database " + name);
+            logger.info("Successfully disconnected from the database " + name);
         } catch (Exception e) {
-            logger.severe("Could not disconnect from the database " + name + "!" + "\n" + e);
+            logger.error("Could not disconnect from the database " + name + "!" + "\n" + e);
         }
     }
 
