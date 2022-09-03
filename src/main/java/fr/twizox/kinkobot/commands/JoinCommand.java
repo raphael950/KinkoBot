@@ -7,10 +7,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 import java.util.Date;
 
-public class TestCommand extends AbstractCommand{
+public class JoinCommand extends AbstractCommand{
 
-    public TestCommand() {
-        super("test", "Commande de test");
+    public JoinCommand() {
+        super("join", "Commande de test pour message de join");
     }
 
     @Override

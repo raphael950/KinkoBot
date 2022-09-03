@@ -33,8 +33,14 @@ public class FileUtils {
             try {
                 OutputStream outputStream = new FileOutputStream(outFile);
                 OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                gson.toJson(new JsonObject(), writer);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                }
+                writer.write(sb.toString());
 
                 reader.close();
                 writer.close();

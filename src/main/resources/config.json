@@ -1,4 +1,4 @@
 {
-  "token": "INSERT_TOKEN_HERE",
-  "suggestionChannelId": "INSERT_CHANNEL_ID_HERE"
+  "suggestionChannel": "INSERT_CHANNEL_ID_HERE",
+  "verificationChannel": "INSERT_CHANNEL_ID_HERE"
 }

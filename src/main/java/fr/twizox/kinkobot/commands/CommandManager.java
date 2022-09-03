@@ -14,7 +14,7 @@ public class CommandManager {
     public void registerCommands(List<AbstractCommand> commandList) {
         for (AbstractCommand command : commandList) {
             commands.put(command.getName(), command);
-        };
+        }
         KinkoBot.instance.getApi().updateCommands().addCommands(commandList).queue((success) -> {
             Logger.info(getClass(), "Successfully registered " + success.size() + " commands.");
         }, (failure) -> {

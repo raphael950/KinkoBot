@@ -1,10 +1,8 @@
 package fr.twizox.kinkobot;
 
 import com.google.gson.JsonObject;
-import fr.twizox.kinkobot.commands.CommandManager;
-import fr.twizox.kinkobot.commands.OpenCommand;
-import fr.twizox.kinkobot.commands.RoleCommand;
-import fr.twizox.kinkobot.commands.TestCommand;
+import fr.twizox.kinkobot.captcha.CaptchaManager;
+import fr.twizox.kinkobot.commands.*;
 import fr.twizox.kinkobot.databases.H2Database;
 import fr.twizox.kinkobot.listeners.ButtonClickListener;
 import fr.twizox.kinkobot.listeners.MessageReceivedListener;
@@ -39,20 +37,23 @@ public class KinkoBot {
 
         FileUtils.saveResource("config.json", false);
         FileUtils.saveResource("data.json", false);
+        FileUtils.saveResource("tokens.json", false);
 
         JsonObject config;
         JsonObject data;
+        JsonObject tokens;
 
         try {
             config = FileUtils.parseJSONFile("config.json");
             data = FileUtils.parseJSONFile("data.json");
+            tokens = FileUtils.parseJSONFile("tokens.json");
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.error(getClass(),"Could not load config.json or data.json");
+            Logger.error(getClass(),"Could not load JSONS");
             return;
         }
 
-        api = JDABuilder.createDefault(config.get("token").getAsString(),
+        api = JDABuilder.createDefault(tokens.get("discord").getAsString(),
                         GatewayIntent.MESSAGE_CONTENT,
                         GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.GUILD_VOICE_STATES,
@@ -60,14 +61,17 @@ public class KinkoBot {
                 .setActivity(Activity.watching("kinkomc.fr"))
                 .build();
 
+        CaptchaManager captchaManager = new CaptchaManager();
+
         CommandManager commandManager = new CommandManager();
         commandManager.registerCommands(List.of(
                 new OpenCommand(),
-                new TestCommand(),
-                new RoleCommand()
+                new JoinCommand(),
+                new RoleCommand(),
+                new CaptchaCommand(captchaManager)
         ));
 
-        api.addEventListener(new MessageReceivedListener(config, data),
+        api.addEventListener(new MessageReceivedListener(captchaManager, config, data),
                 new SlashCommandListener(commandManager),
                 new ButtonClickListener());
 
