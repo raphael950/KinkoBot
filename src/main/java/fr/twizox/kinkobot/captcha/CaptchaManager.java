@@ -8,7 +8,7 @@ import java.util.WeakHashMap;
 
 public class CaptchaManager {
 
-    WeakHashMap<Member, Captcha> captchas = new WeakHashMap<>();
+    private final WeakHashMap<Member, Captcha> captchas = new WeakHashMap<>();
 
     public void addCaptcha(Member member, ImageCaptcha imageCaptcha) {
         captchas.put(member, new Captcha(imageCaptcha.getContent(), imageCaptcha.getCreated()));
