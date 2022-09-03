@@ -1,12 +1,16 @@
 package fr.twizox.kinkobot.commands;
 
+import com.google.gson.JsonObject;
 import fr.twizox.kinkobot.KinkoBot;
+import fr.twizox.kinkobot.Roles;
 import fr.twizox.kinkobot.captcha.CaptchaManager;
 import fr.twizox.kinkobot.utils.Colors;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.utils.FileUpload;
 import net.logicsquad.nanocaptcha.content.NumbersContentProducer;
@@ -22,16 +26,24 @@ import java.util.concurrent.TimeUnit;
 
 public class CaptchaCommand extends AbstractCommand {
 
+    private final JsonObject config;
     private final CaptchaManager captchaManager;
 
-    public CaptchaCommand(CaptchaManager captchaManager) {
+    public CaptchaCommand(JsonObject config, CaptchaManager captchaManager) {
         super("captcha", "Générer un captcha à résoudre");
         this.captchaManager = captchaManager;
+        this.config = config;
+
         addOption(OptionType.STRING, "captcha", "Le code envoyé par le bot", false);
+        super.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.NICKNAME_CHANGE));
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        if (event.getMember().getRoles().size() != 0) {
+            event.reply("Vous êtes déjà vérifié").setEphemeral(true).queue();
+            return;
+        }
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setFooter("KinkoMC - 2022", KinkoBot.instance.getApi().getSelfUser().getAvatarUrl())
                 .setTimestamp(new Date().toInstant());
@@ -48,6 +60,7 @@ public class CaptchaCommand extends AbstractCommand {
                 embedBuilder.setDescription("Vous allez être redirigé vers le serveur.");
                 embedBuilder.setColor(Colors.NICE_GREEN);
                 event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
+                event.getGuild().addRoleToMember(member, Roles.CIVIL.getRole(event.getGuild(), config)).queue();
                 return;
             } else if (captchaManager.hasCaptcha(member)) {
                 embedBuilder.setFooter((3 - captchaManager.getCaptcha(member).getTries()) + " tentatives restantes", KinkoBot.instance.getApi().getSelfUser().getAvatarUrl());

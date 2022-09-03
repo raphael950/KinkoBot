@@ -28,12 +28,12 @@ public class KinkoBot {
     public static void main(String[] args) throws IOException {
         try {
             instance.start(args);
-        } catch (LoginException e) {
+        } catch (LoginException | InterruptedException e) {
             Logger.error(KinkoBot.class, "Invalid token");
         }
     }
 
-    public void start(String[] args) throws LoginException {
+    public void start(String[] args) throws LoginException, InterruptedException {
 
         FileUtils.saveResource("config.json", false);
         FileUtils.saveResource("data.json", false);
@@ -49,7 +49,7 @@ public class KinkoBot {
             tokens = FileUtils.parseJSONFile("tokens.json");
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.error(getClass(),"Could not load JSONS");
+            Logger.error(getClass(), "Could not load JSONS");
             return;
         }
 
@@ -61,19 +61,25 @@ public class KinkoBot {
                 .setActivity(Activity.watching("kinkomc.fr"))
                 .build();
 
+        Logger.info(getClass(), "Bot started as " + api.getSelfUser().getAsTag() + ", loading on " + api.awaitReady().getGuilds().size() + " guilds.");
+
         CaptchaManager captchaManager = new CaptchaManager();
+        api.updateCommands().submit();
 
         CommandManager commandManager = new CommandManager();
-        commandManager.registerCommands(List.of(
-                new OpenCommand(),
-                new JoinCommand(),
-                new RoleCommand(),
-                new CaptchaCommand(captchaManager)
-        ));
+        commandManager.registerCommands(getApi().getGuilds(),
+                List.of(
+                        new OpenCommand(),
+                        new JoinCommand(),
+                        new RoleCommand(),
+                        new CaptchaCommand(config, captchaManager)
+                ));
 
         api.addEventListener(new MessageReceivedListener(captchaManager, config, data),
                 new SlashCommandListener(commandManager),
                 new ButtonClickListener());
+
+        Logger.info(getClass(), "Bot loaded successfully.");
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {

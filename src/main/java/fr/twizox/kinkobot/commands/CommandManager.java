@@ -1,7 +1,7 @@
 package fr.twizox.kinkobot.commands;
 
-import fr.twizox.kinkobot.KinkoBot;
 import fr.twizox.kinkobot.utils.Logger;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.HashMap;
@@ -11,15 +11,18 @@ public class CommandManager {
 
     private final HashMap<String, AbstractCommand> commands = new HashMap<>();
 
-    public void registerCommands(List<AbstractCommand> commandList) {
+    public void registerCommands(List<Guild> guilds, List<AbstractCommand> commandList) {
+        Logger.info(getClass(), "Registering commands on " + guilds.size() + " guilds");
         for (AbstractCommand command : commandList) {
             commands.put(command.getName(), command);
         }
-        KinkoBot.instance.getApi().updateCommands().addCommands(commandList).queue((success) -> {
-            Logger.info(getClass(), "Successfully registered " + success.size() + " commands.");
-        }, (failure) -> {
-            Logger.error(getClass(), "Failed to register commands:" + failure.getMessage());
-        });
+        for (Guild guild : guilds) {
+            guild.updateCommands().addCommands(commandList).queue((success) -> {
+                Logger.info(getClass(), "Successfully registered " + success.size() + " commands on guild " + guild.getName());
+            }, (failure) -> {
+                Logger.error(getClass(), "Failed to register commands:" + failure.getMessage());
+            });
+        };
     }
 
     public AbstractCommand getCommand(String name) {

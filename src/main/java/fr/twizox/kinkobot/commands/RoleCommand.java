@@ -3,6 +3,7 @@ package fr.twizox.kinkobot.commands;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
@@ -12,6 +13,7 @@ public class RoleCommand extends AbstractCommand {
 
     public RoleCommand() {
         super("role", "Give a role to a user");
+        super.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
     }
 
     @Override

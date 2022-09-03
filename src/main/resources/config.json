@@ -1,4 +1,6 @@
 {
   "suggestionChannel": "INSERT_CHANNEL_ID_HERE",
-  "verificationChannel": "INSERT_CHANNEL_ID_HERE"
+  "verificationChannel": "INSERT_CHANNEL_ID_HERE",
+
+  "civilRole": "INSERT_ROLE_ID_HERE"
 }

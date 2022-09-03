@@ -4,13 +4,15 @@ import fr.twizox.kinkobot.utils.Colors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 
 import java.util.Date;
 
-public class JoinCommand extends AbstractCommand{
+public class JoinCommand extends AbstractCommand {
 
     public JoinCommand() {
         super("join", "Commande de test pour message de join");
+        super.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
     }
 
     @Override
