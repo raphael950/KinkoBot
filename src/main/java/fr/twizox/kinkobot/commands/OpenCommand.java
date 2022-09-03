@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -12,6 +13,10 @@ public class OpenCommand extends AbstractCommand {
 
     public OpenCommand() {
         super("ouverture", "Informations concernant la date d'ouverturee");
+        super.addOption(OptionType.MENTIONABLE,
+                "utilisateur",
+                "Afficher le message d'ouverture à un membre du serveur",
+                false, false);
     }
 
     public void execute(@NotNull SlashCommandInteractionEvent event) {

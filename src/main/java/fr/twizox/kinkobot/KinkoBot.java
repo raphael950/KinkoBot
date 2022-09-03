@@ -1,8 +1,12 @@
 package fr.twizox.kinkobot;
 
 import com.google.gson.JsonObject;
+import fr.twizox.kinkobot.commands.CommandManager;
 import fr.twizox.kinkobot.commands.OpenCommand;
+import fr.twizox.kinkobot.commands.RoleCommand;
+import fr.twizox.kinkobot.commands.TestCommand;
 import fr.twizox.kinkobot.databases.H2Database;
+import fr.twizox.kinkobot.listeners.ButtonClickListener;
 import fr.twizox.kinkobot.listeners.MessageReceivedListener;
 import fr.twizox.kinkobot.listeners.SlashCommandListener;
 import fr.twizox.kinkobot.utils.FileUtils;
@@ -10,8 +14,6 @@ import fr.twizox.kinkobot.utils.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
@@ -50,23 +52,24 @@ public class KinkoBot {
             return;
         }
 
-        OpenCommand openCommand = new OpenCommand();
-
         api = JDABuilder.createDefault(config.get("token").getAsString(),
                         GatewayIntent.MESSAGE_CONTENT,
                         GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.GUILD_VOICE_STATES,
                         GatewayIntent.GUILD_EMOJIS_AND_STICKERS)
                 .setActivity(Activity.watching("kinkomc.fr"))
-                .addEventListeners(new MessageReceivedListener(data), new SlashCommandListener(List.of(openCommand)))
                 .build();
 
+        CommandManager commandManager = new CommandManager();
+        commandManager.registerCommands(List.of(
+                new OpenCommand(),
+                new TestCommand(),
+                new RoleCommand()
+        ));
 
-
-        api.updateCommands().addCommands(openCommand
-                .addOption(OptionType.MENTIONABLE, "utilisateur", "Afficher le message d'ouverture à un membre du serveur", false, false)).submit().thenRun(() -> {
-            Logger.info(getClass(), "Slash commands registered!");
-        });
+        api.addEventListener(new MessageReceivedListener(config, data),
+                new SlashCommandListener(commandManager),
+                new ButtonClickListener());
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {

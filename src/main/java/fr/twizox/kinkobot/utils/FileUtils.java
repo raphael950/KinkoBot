@@ -33,7 +33,6 @@ public class FileUtils {
             try {
                 OutputStream outputStream = new FileOutputStream(outFile);
                 OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 gson.toJson(new JsonObject(), writer);
 

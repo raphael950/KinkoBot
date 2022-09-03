@@ -1,3 +1,4 @@
 {
-  "token": "INSERT_TOKEN_HERE"
+  "token": "INSERT_TOKEN_HERE",
+  "suggestionChannelId": "INSERT_CHANNEL_ID_HERE"
 }
