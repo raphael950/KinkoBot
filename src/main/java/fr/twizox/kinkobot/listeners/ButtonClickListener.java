@@ -28,26 +28,26 @@ public class ButtonClickListener extends ListenerAdapter {
         Guild guild = event.getGuild();
         if (member == null || guild == null) return;
 
+        EmbedBuilder embedBuilder = new EmbedBuilder().setColor(Colors.NICE_GREEN)
+                .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl());
+
+        boolean citizen = false;
         for (Roles roleEnum : roles) {
             Role role = roleEnum.getRole(guild, config);
             if (!member.getRoles().contains(role)) continue;
             guild.removeRoleFromMember(member, role).queue();
-            if (roleEnum == getRoleEnum(event)) { // Role demandé
-                event.replyEmbeds(new EmbedBuilder()
-                        .setColor(Colors.NICE_GREEN)
-                        .setDescription("Vous êtes de nouveau Citoyen !")
-                        .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl())
-                        .build()).setEphemeral(true).queue();
-                return;
-            }
+            if (roleEnum == getRoleEnum(event)) citizen = true;
+        }
+        if (citizen) {
+            event.replyEmbeds(embedBuilder.setDescription("Vous êtes de nouveau Citoyen !").build()).setEphemeral(true).queue();
+            return;
         }
 
         Role roleToAdd = getRole(event);
         guild.addRoleToMember(member, roleToAdd).submit().thenRun(() -> {
-            event.replyEmbeds(new EmbedBuilder().setColor(Colors.NICE_GREEN)
-                            .setDescription("Vous avez rejoint les " + roleToAdd.getName() + "s !")
-                            .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl()).build())
-                    .setEphemeral(true).queue();
+            event.replyEmbeds(embedBuilder
+                    .setDescription("Vous avez rejoint les " + getRole(event).getName() + "s !")
+                    .build()).setEphemeral(true).queue();
         });
 
     }
