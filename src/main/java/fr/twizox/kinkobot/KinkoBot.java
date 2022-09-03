@@ -72,12 +72,13 @@ public class KinkoBot {
                         new OpenCommand(),
                         new JoinCommand(),
                         new RoleCommand(),
-                        new CaptchaCommand(config, captchaManager)
+                        new CaptchaCommand(config, captchaManager),
+                        new CaptchaSendCommand()
                 ));
 
         api.addEventListener(new MessageReceivedListener(captchaManager, config, data),
                 new SlashCommandListener(commandManager),
-                new ButtonClickListener());
+                new ButtonClickListener(config));
 
         Logger.info(getClass(), "Bot loaded successfully.");
 

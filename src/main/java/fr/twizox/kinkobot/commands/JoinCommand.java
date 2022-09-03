@@ -32,7 +32,8 @@ public class JoinCommand extends AbstractCommand {
                 .setDescription(description)
                 .setThumbnail(user.getEffectiveAvatarUrl())
                 .setTimestamp(new Date().toInstant())
-                .setColor(Colors.DEFAULT);
+                .setColor(Colors.DEFAULT)
+                .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl());
 
         event.replyEmbeds(embedBuilder.build()).queue();
     }

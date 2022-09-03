@@ -2,5 +2,8 @@
   "suggestionChannel": "INSERT_CHANNEL_ID_HERE",
   "verificationChannel": "INSERT_CHANNEL_ID_HERE",
 
-  "civilRole": "INSERT_ROLE_ID_HERE"
+  "civilRole": "INSERT_ROLE_ID_HERE",
+  "pirateRole": "INSERT_ROLE_ID_HERE",
+  "marineRole": "INSERT_ROLE_ID_HERE",
+  "rebelleRole": "INSERT_ROLE_ID_HERE"
 }

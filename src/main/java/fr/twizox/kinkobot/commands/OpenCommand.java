@@ -36,6 +36,7 @@ public class OpenCommand extends AbstractCommand {
                 .setTitle("Date d'ouverture", "https://kinkomc.fr/")
                 .setDescription(description)
                 .setColor(randomColor)
+                .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl())
                 .build();
         event.replyEmbeds(embed).setEphemeral(isPrivate).queue();
     }

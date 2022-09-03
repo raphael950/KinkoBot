@@ -5,7 +5,10 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 
 public enum Roles {
-    CIVIL("civilRole");
+    CIVIL("civilRole"),
+    PIRATE("pirateRole"),
+    MARINE("marineRole"),
+    REBELLE("rebelleRole");
 
     private final String configKey;
 
