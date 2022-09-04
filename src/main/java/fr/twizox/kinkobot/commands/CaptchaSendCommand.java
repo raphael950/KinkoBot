@@ -17,10 +17,12 @@ public class CaptchaSendCommand extends AbstractCommand {
 
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle("Vérification \uD83D\uDD12")
-                .setDescription("Veuillez effectuer la commande `/captcha` afin de générer un captcha à résoudre.")
+                .setDescription("1) Effectuez la commande `/captcha` afin de générer un captcha à résoudre.\n" +
+                        "2) Refaites la commande suivie du code que vous avez reçu: `/captcha code`\n\n" +
+                        "*Votre code a disparu ? Pas de problème ! Refaites la commande pour en générer un à nouveau*")
                 .setColor(Colors.NICE_ORANGE)
                 .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl())
-                .setTimestamp(event.getTimeCreated().toInstant());
+                .setTimestamp(event.getTimeCreated());
         event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
         event.reply("Le captcha a été envoyé.").setEphemeral(true).queue();
     }

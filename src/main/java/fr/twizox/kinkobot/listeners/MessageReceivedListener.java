@@ -38,6 +38,18 @@ public class MessageReceivedListener extends ListenerAdapter {
             suggestion(event);
         } else if (channelId.equals(Channels.VERIFICATION.getId(config))) {
             event.getMessage().delete().queue();
+
+            EmbedBuilder embedBuilder = new EmbedBuilder()
+                    .setColor(Colors.NICE_RED)
+                    .setTitle("Vérification \uD83D\uDD12")
+                    .setDescription("Vous n'avez pas de captcha à résoudre ! Veuillez effectuer la commande `/captcha` afin de générer un captcha à résoudre dans `channel de vérification`.")
+                    .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl());
+
+            if (captchaManager.hasCaptcha(event.getMember())) {
+                embedBuilder.setDescription(("> /captcha code"));
+            }
+
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessageEmbeds(embedBuilder.build()).queue());
         }
 
     }

@@ -1,29 +1,23 @@
 package fr.twizox.kinkobot.captcha;
 
-import java.time.OffsetDateTime;
+import net.logicsquad.nanocaptcha.image.ImageCaptcha;
 
 public class Captcha {
 
-    private String content;
-    private final OffsetDateTime dateTime;
+    private ImageCaptcha imageCaptcha;
     private int tries;
 
-    public Captcha(String content, OffsetDateTime dateTime) {
-        this.content = content;
-        this.dateTime = dateTime;
+    public Captcha(ImageCaptcha imageCaptcha) {
+        this.imageCaptcha = imageCaptcha;
         this.tries = 0;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public ImageCaptcha getImageCaptcha() {
+        return imageCaptcha;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public OffsetDateTime getDateTime() {
-        return dateTime;
+    public void setImageCaptcha(ImageCaptcha imageCaptcha) {
+        this.imageCaptcha = imageCaptcha;
     }
 
     public int getTries() {

@@ -5,6 +5,7 @@ import fr.twizox.kinkobot.captcha.CaptchaManager;
 import fr.twizox.kinkobot.commands.*;
 import fr.twizox.kinkobot.databases.H2Database;
 import fr.twizox.kinkobot.listeners.ButtonClickListener;
+import fr.twizox.kinkobot.listeners.GuildMemberRemoveListener;
 import fr.twizox.kinkobot.listeners.MessageReceivedListener;
 import fr.twizox.kinkobot.listeners.SlashCommandListener;
 import fr.twizox.kinkobot.utils.FileUtils;
@@ -16,7 +17,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 public class KinkoBot {
@@ -68,17 +68,17 @@ public class KinkoBot {
 
         CommandManager commandManager = new CommandManager();
         commandManager.registerCommands(getApi().getGuilds(),
-                List.of(
-                        new OpenCommand(),
-                        new JoinCommand(),
-                        new RoleCommand(),
-                        new CaptchaCommand(config, captchaManager),
-                        new CaptchaSendCommand()
-                ));
+                new OpenCommand(),
+                new JoinCommand(),
+                new RoleCommand(),
+                new CaptchaCommand(config, captchaManager),
+                new CaptchaSendCommand());
 
-        api.addEventListener(new MessageReceivedListener(captchaManager, config, data),
+        api.addEventListener(
+                new MessageReceivedListener(captchaManager, config, data),
                 new SlashCommandListener(commandManager),
-                new ButtonClickListener(config));
+                new ButtonClickListener(config),
+                new GuildMemberRemoveListener(captchaManager));
 
         Logger.info(getClass(), "Bot loaded successfully.");
 

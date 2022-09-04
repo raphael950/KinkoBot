@@ -11,7 +11,7 @@ public class CommandManager {
 
     private final HashMap<String, AbstractCommand> commands = new HashMap<>();
 
-    public void registerCommands(List<Guild> guilds, List<AbstractCommand> commandList) {
+    public void registerCommands(List<Guild> guilds, AbstractCommand... commandList) {
         Logger.info(getClass(), "Registering commands on " + guilds.size() + " guilds");
         for (AbstractCommand command : commandList) {
             commands.put(command.getName(), command);
