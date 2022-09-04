@@ -4,12 +4,10 @@ import com.google.gson.JsonObject;
 import fr.twizox.kinkobot.Channels;
 import fr.twizox.kinkobot.captcha.CaptchaManager;
 import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.DiscordUtils;
 import fr.twizox.kinkobot.utils.FileUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.unions.GuildMessageChannelUnion;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -38,18 +36,17 @@ public class MessageReceivedListener extends ListenerAdapter {
             suggestion(event);
         } else if (channelId.equals(Channels.VERIFICATION.getId(config))) {
             event.getMessage().delete().queue();
-
             EmbedBuilder embedBuilder = new EmbedBuilder()
                     .setColor(Colors.NICE_RED)
                     .setTitle("Vérification \uD83D\uDD12")
-                    .setDescription("Vous n'avez pas de captcha à résoudre ! Veuillez effectuer la commande `/captcha` afin de générer un captcha à résoudre dans `channel de vérification`.")
+                    .setDescription("Vous n'avez pas de captcha à résoudre !\nVeuillez effectuer la commande `/captcha` dans le channel " + event.getChannel().getAsMention())
                     .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl());
 
             if (captchaManager.hasCaptcha(event.getMember())) {
-                embedBuilder.setDescription(("> /captcha code"));
+                embedBuilder.setDescription(("> `/captcha code` dans le channel " + event.getChannel().getAsMention() + " pour valider votre captcha !"));
             }
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessageEmbeds(embedBuilder.build()).queue());
+            DiscordUtils.sendEmbed(30, user, embedBuilder);
         }
 
     }
@@ -58,7 +55,7 @@ public class MessageReceivedListener extends ListenerAdapter {
     private void suggestion(MessageReceivedEvent event) {
 
         User user = event.getAuthor();
-        GuildMessageChannelUnion channel = event.getGuildChannel();
+        MessageChannel channel = event.getChannel();
 
         event.getMessage().delete().queue();
         int count = data.get("suggestionCount").getAsInt() + 1;
@@ -69,7 +66,7 @@ public class MessageReceivedListener extends ListenerAdapter {
                 .setDescription(event.getMessage().getContentRaw())
                 .setColor(Colors.getRandomColor()).build();
 
-        event.getChannel().sendMessageEmbeds(messageEmbed).queue((message) -> {
+        channel.sendMessageEmbeds(messageEmbed).queue((message) -> {
             message.createThreadChannel("Suggestion de " + user.getName()).queue((threadChannel) -> {
                 threadChannel.addThreadMember(user).queue();
                 threadChannel.leave().queue();
