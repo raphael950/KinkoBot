@@ -1,6 +1,5 @@
 package fr.twizox.kinkobot.listeners;
 
-import com.google.gson.JsonObject;
 import fr.twizox.kinkobot.Roles;
 import fr.twizox.kinkobot.utils.Colors;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -14,12 +13,7 @@ import java.util.List;
 
 public class ButtonClickListener extends ListenerAdapter {
 
-    private final JsonObject config;
     private final List<Roles> roles = List.of(Roles.PIRATE, Roles.MARINE, Roles.REBELLE);
-
-    public ButtonClickListener(JsonObject config) {
-        this.config = config;
-    }
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
@@ -33,7 +27,7 @@ public class ButtonClickListener extends ListenerAdapter {
 
         boolean citizen = false;
         for (Roles roleEnum : roles) {
-            Role role = roleEnum.getRole(guild, config);
+            Role role = roleEnum.getRole(guild);
             if (!member.getRoles().contains(role)) continue;
             guild.removeRoleFromMember(member, role).queue();
             if (roleEnum == getRoleEnum(event)) citizen = true;
@@ -57,7 +51,7 @@ public class ButtonClickListener extends ListenerAdapter {
     }
 
     private Role getRole(ButtonInteractionEvent event) {
-        return getRoleEnum(event).getRole(event.getGuild(), config);
+        return getRoleEnum(event).getRole(event.getGuild());
     }
 
 }

@@ -21,7 +21,7 @@ public enum Roles {
         return jsonObject.get(configKey).getAsString();
     }
 
-    public Role getRole(Guild guild, JsonObject jsonObject) {
-        return guild.getRoleById(getId(jsonObject));
+    public Role getRole(Guild guild) {
+        return guild.getRoleById(getId(KinkoBot.getConfig()));
     }
 }

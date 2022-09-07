@@ -1,6 +1,5 @@
 package fr.twizox.kinkobot.commands;
 
-import com.google.gson.JsonObject;
 import fr.twizox.kinkobot.KinkoBot;
 import fr.twizox.kinkobot.Roles;
 import fr.twizox.kinkobot.captcha.CaptchaManager;
@@ -16,13 +15,11 @@ import java.util.concurrent.TimeUnit;
 
 public class CaptchaCommand extends AbstractCommand {
 
-    private final JsonObject config;
     private final CaptchaManager captchaManager;
 
-    public CaptchaCommand(JsonObject config, CaptchaManager captchaManager) {
+    public CaptchaCommand(CaptchaManager captchaManager) {
         super("captcha", "Générer un captcha à résoudre");
         this.captchaManager = captchaManager;
-        this.config = config;
         super.addOption(OptionType.INTEGER, "code", "Nombre se trouvant sur l'image du captcha envoyé.", false);
         super.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.NICKNAME_CHANGE));
     }
@@ -56,7 +53,7 @@ public class CaptchaCommand extends AbstractCommand {
                         .setDescription("Vous allez être redirigé vers le serveur...")
                         .setColor(Colors.NICE_GREEN)
                         .build()).setEphemeral(true).queue();
-                event.getGuild().addRoleToMember(member, Roles.CIVIL.getRole(event.getGuild(), config)).queue();
+                event.getGuild().addRoleToMember(member, Roles.CIVIL.getRole(event.getGuild())).queue();
                 return;
             }
             if (captchaManager.hasCaptcha(member)) {

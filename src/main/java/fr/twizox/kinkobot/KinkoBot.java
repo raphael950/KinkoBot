@@ -22,10 +22,11 @@ import java.util.Scanner;
 public class KinkoBot {
 
     public static final KinkoBot instance = new KinkoBot();
+    private static JsonObject config;
     private JDA api;
     private H2Database database;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try {
             instance.start(args);
         } catch (LoginException | InterruptedException e) {
@@ -39,7 +40,6 @@ public class KinkoBot {
         FileUtils.saveResource("data.json", false);
         FileUtils.saveResource("tokens.json", false);
 
-        JsonObject config;
         JsonObject data;
         JsonObject tokens;
 
@@ -71,13 +71,13 @@ public class KinkoBot {
                 new OpenCommand(),
                 new JoinCommand(),
                 new RoleCommand(),
-                new CaptchaCommand(config, captchaManager),
+                new CaptchaCommand(captchaManager),
                 new CaptchaSendCommand());
 
         api.addEventListener(
-                new MessageReceivedListener(captchaManager, config, data),
+                new MessageReceivedListener(captchaManager, data),
                 new SlashCommandListener(commandManager),
-                new ButtonClickListener(config),
+                new ButtonClickListener(),
                 new GuildMemberRemoveListener(captchaManager));
 
         Logger.info(getClass(), "Bot loaded successfully.");
@@ -108,4 +108,7 @@ public class KinkoBot {
         return api;
     }
 
+    public static JsonObject getConfig() {
+        return config;
+    }
 }

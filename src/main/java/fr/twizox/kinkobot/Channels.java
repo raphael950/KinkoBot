@@ -13,7 +13,8 @@ public enum Channels {
         this.configKey = configKey;
     }
 
-    public String getId(JsonObject jsonObject) {
+    public String getId() {
+        JsonObject jsonObject = KinkoBot.getConfig();
         if (!jsonObject.has(configKey)) throw new RuntimeException("Missing config key: " + configKey);
         return jsonObject.get(configKey).getAsString();
     }
