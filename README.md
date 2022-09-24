@@ -1,0 +1,2 @@
+# KinkoBot
+Discord bot
