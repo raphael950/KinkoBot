@@ -1,6 +1,6 @@
 package fr.twizox.kinkobot.commands;
 
-import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.NiceColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -26,7 +26,7 @@ public class RoleCommand extends AbstractCommand {
                 .setActionRow(pirate, rebelle, marine)
                 .setEmbeds(new EmbedBuilder()
                         .setTitle("Choisi ton Camp")
-                        .setColor(Colors.NICE_BLUE)
+                        .setColor(NiceColors.BLUE.getColor())
                         .setDescription("\n\n <:pirate:997397421103517718> **Pirate**: hors la loi\n\n <:marine:995254664318689332> **Marine**: justice suprême\n\n <:rebelle:997397423104200824> **Rebelle**: renverser la Marine !\n\n> *Clique sur le bouton correspondant à ton camp pour obtenir le rôle associé !*")
                         .setThumbnail(event.getGuild().getIconUrl()).build());
 

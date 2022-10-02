@@ -1,6 +1,6 @@
 package fr.twizox.kinkobot.commands;
 
-import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.NiceColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -20,7 +20,7 @@ public class CaptchaSendCommand extends AbstractCommand {
                 .setDescription("1) Effectuez la commande `/captcha` afin de générer un captcha à résoudre.\n" +
                         "2) Refaites la commande suivie du code que vous avez reçu: `/captcha code`\n\n" +
                         "*Votre code a disparu ? Pas de problème ! Refaites la commande pour en générer un à nouveau*")
-                .setColor(Colors.NICE_ORANGE)
+                .setColor(NiceColors.ORANGE.getColor())
                 .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl())
                 .setTimestamp(event.getTimeCreated());
         event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();

@@ -1,6 +1,6 @@
 package fr.twizox.kinkobot.commands;
 
-import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.NiceColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -32,7 +32,7 @@ public class JoinCommand extends AbstractCommand {
                 .setDescription(description)
                 .setThumbnail(user.getEffectiveAvatarUrl())
                 .setTimestamp(new Date().toInstant())
-                .setColor(Colors.DEFAULT)
+                .setColor(NiceColors.DEFAULT.getColor())
                 .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl());
 
         event.replyEmbeds(embedBuilder.build()).queue();

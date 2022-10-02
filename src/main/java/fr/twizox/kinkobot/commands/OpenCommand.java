@@ -1,5 +1,6 @@
 package fr.twizox.kinkobot.commands;
 
+import fr.twizox.kinkobot.utils.NiceColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -30,7 +31,7 @@ public class OpenCommand extends AbstractCommand {
                     "Bonjour " + option.getAsMentionable().getAsMention() + ", le serveur est encore en cours de **développement** \n\n• L'ouverture est prévue fin septembre.";
         }
 
-        Color randomColor = Color.getHSBColor((float) Math.random(), 0.5f, 1.0f);
+        Color randomColor = NiceColors.getRandomColor();
 
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle("Date d'ouverture", "https://kinkomc.fr/")

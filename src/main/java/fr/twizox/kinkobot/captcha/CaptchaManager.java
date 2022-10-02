@@ -1,6 +1,6 @@
 package fr.twizox.kinkobot.captcha;
 
-import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.NiceColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -87,14 +87,14 @@ public class CaptchaManager {
         embedBuilder.setImage("attachment://img.png")
                 .setTitle("Vérification Anti-Robot \uD83E\uDD16")
                 .setDescription("Veuillez entrer la commande `/captcha` **en spécifiant le code ci-dessous**.")
-                .setColor(Colors.NICE_BLUE);
+                .setColor(NiceColors.BLUE.getColor());
 
         getCallBackWithImage(getOrGenerateCaptcha(member, overridePreviousCaptcha), embedBuilder, event).queue();
     }
 
     private ImageCaptcha generateCaptcha() {
         return new ImageCaptcha.Builder(200, 50)
-                .addContent(new NumbersContentProducer(6), new DefaultWordRenderer(List.of(Colors.NICE_BLUE), List.of(new Font("Arial", Font.BOLD, 40))))
+                .addContent(new NumbersContentProducer(6), new DefaultWordRenderer(List.of(NiceColors.BLUE.getColor()), List.of(new Font("Arial", Font.BOLD, 40))))
                 .build();
     }
 

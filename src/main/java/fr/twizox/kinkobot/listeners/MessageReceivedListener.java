@@ -3,7 +3,7 @@ package fr.twizox.kinkobot.listeners;
 import com.google.gson.JsonObject;
 import fr.twizox.kinkobot.Channels;
 import fr.twizox.kinkobot.captcha.CaptchaManager;
-import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.NiceColors;
 import fr.twizox.kinkobot.utils.DiscordUtils;
 import fr.twizox.kinkobot.utils.FileUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -36,7 +36,7 @@ public class MessageReceivedListener extends ListenerAdapter {
         } else if (channelId.equals(Channels.VERIFICATION.getId())) {
             event.getMessage().delete().queue();
             EmbedBuilder embedBuilder = new EmbedBuilder()
-                    .setColor(Colors.NICE_RED)
+                    .setColor(NiceColors.RED.getColor())
                     .setTitle("Vérification \uD83D\uDD12")
                     .setDescription("Vous n'avez pas de captcha à résoudre !\nVeuillez effectuer la commande `/captcha` dans le channel " + event.getChannel().getAsMention())
                     .setFooter("KinkoMC", event.getJDA().getSelfUser().getAvatarUrl());
@@ -63,7 +63,7 @@ public class MessageReceivedListener extends ListenerAdapter {
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setAuthor(user.getAsTag(), null, user.getEffectiveAvatarUrl()).setTitle("Suggestion #" + count)
                 .setDescription(event.getMessage().getContentRaw())
-                .setColor(Colors.getRandomColor()).build();
+                .setColor(NiceColors.getRandomColor()).build();
 
         channel.sendMessageEmbeds(messageEmbed).queue((message) -> {
             message.addReaction(Emoji.fromUnicode("⬆️")).and(message.addReaction(Emoji.fromUnicode("⬇️"))).queue();

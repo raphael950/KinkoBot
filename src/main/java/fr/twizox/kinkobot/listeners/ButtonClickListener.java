@@ -1,7 +1,7 @@
 package fr.twizox.kinkobot.listeners;
 
 import fr.twizox.kinkobot.Roles;
-import fr.twizox.kinkobot.utils.Colors;
+import fr.twizox.kinkobot.utils.NiceColors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -22,7 +22,7 @@ public class ButtonClickListener extends ListenerAdapter {
         Guild guild = event.getGuild();
         if (member == null || guild == null) return;
 
-        EmbedBuilder embedBuilder = new EmbedBuilder().setColor(Colors.NICE_GREEN)
+        EmbedBuilder embedBuilder = new EmbedBuilder().setColor(NiceColors.GREEN.getColor())
                 .setFooter("KinkoMC - 2022", event.getJDA().getSelfUser().getAvatarUrl());
 
         boolean citizen = false;
